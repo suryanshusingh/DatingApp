@@ -23,6 +23,8 @@ namespace DatingApp.API.Controllers
         private readonly IMapper mapper;
         private readonly IOptions<CloudinarySettings> cloudinaryConfig;
         private Cloudinary cloudinary;
+
+        #region Constructor
         public PhotosController(IDatingRepository repo, IMapper mapper,
             IOptions<CloudinarySettings> cloudinaryConfig)
         {
@@ -42,6 +44,16 @@ namespace DatingApp.API.Controllers
             );
 
             cloudinary = new Cloudinary(acc);
+        }
+        #endregion
+
+        [HttpGet("{id}", Name = "GetPhoto")]
+        public async Task<IActionResult> GetPhoto(int id)
+        {
+            var photoFromRepo = await repo.GetPhoto(id);
+
+            var photo = mapper.Map<PhotoForReturnDto>(photoFromRepo);
+            return Ok(photo);
         }
 
         [HttpPost]
@@ -79,7 +91,8 @@ namespace DatingApp.API.Controllers
 
             if (await repo.SaveAll())
             {
-                return Ok();
+                var photoToReturn = mapper.Map<PhotoForReturnDto>(photo);
+                return CreatedAtRoute("GetPhoto", new { id = photo.Id}, photoToReturn);
             }
             return BadRequest("Could not add the photo");
 
