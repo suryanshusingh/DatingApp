@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
   }
 
   passwordMatchValidator(g: FormGroup) {
-    return g.get('password')    
+    return g.get('password').value === g.get('confirmPassword').value ? null : {'mismatch': true};    
   }
 
   cancel() {
