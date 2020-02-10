@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TimeAgoPipe } from 'time-ago-pipe';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -34,6 +35,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { PhotoService } from './_services/photo.service';
 
 
 @NgModule({
@@ -48,7 +50,8 @@ import { FileUploadModule } from 'ng2-file-upload';
       MessagesComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      TimeAgoPipe
    ],
    imports: [
       BrowserModule,
@@ -74,6 +77,7 @@ import { FileUploadModule } from 'ng2-file-upload';
       AuthService,
       ErrorInterceptorProvider,
       AlertifyService,
+      PhotoService,
       AuthGuard,
       UserService,
       MemberDetailResolver,
