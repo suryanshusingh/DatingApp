@@ -1,3 +1,4 @@
+import { ListResolver } from './_resolvers/lists.resolver';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
@@ -85,6 +86,7 @@ import { PhotoService } from './_services/photo.service';
       MemberDetailResolver,
       MemberListResolver,
       MemberEditResolver,
+      ListResolver,
       PreventUnsavedChanges
    ],
    bootstrap: [

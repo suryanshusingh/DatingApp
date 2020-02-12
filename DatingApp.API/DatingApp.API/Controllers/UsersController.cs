@@ -72,7 +72,7 @@ namespace DatingApp.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
         {
-            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            if (InvalidUser(id))
                 return Unauthorized();
 
             var userFromRepo = await repo.GetUser(id);
@@ -81,6 +81,44 @@ namespace DatingApp.API.Controllers
                 return NoContent();
 
             throw new Exception($"Updating user {id} failed on save");
+        }
+
+        [HttpPost("{id}/like/{recipientId}")]
+        public async Task<IActionResult> LikeUser(int id, int recipientId)
+        {
+            if (InvalidUser(id))
+                return Unauthorized();
+
+            if (await AlreadyLiked(id, recipientId))
+                return BadRequest("You already like this user");
+
+            //Check if recipient user exists
+            if (await repo.GetUser(recipientId) == null)
+                return NotFound();
+
+            var like = new Like
+            {
+                LikerId = id,
+                LikeeId = recipientId
+            };
+
+            repo.Add<Like>(like);
+
+            if (await repo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to like user");
+        }
+
+        private async Task<bool> AlreadyLiked(int id, int recipientId)
+        {
+            var like = await repo.GetLike(id, recipientId);
+            return like != null;
+        }
+
+        private bool InvalidUser(int id)
+        {
+            return id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
         }
     }
 }
