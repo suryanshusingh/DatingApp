@@ -37,9 +37,12 @@ import { AuthGuard } from './_guards/auth.guard';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { PhotoService } from './_services/photo.service';
+import { MessagesResolver } from './_resolvers/messages.resolver';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 
 @NgModule({
+   //Components, Pipes
    declarations: [
       AppComponent,
       NavComponent,
@@ -52,8 +55,11 @@ import { PhotoService } from './_services/photo.service';
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      TimeAgoPipe
+      TimeAgoPipe,
+      MemberMessagesComponent
    ],
+
+   //Imported modules
    imports: [
       BrowserModule,
       FormsModule,
@@ -76,6 +82,8 @@ import { PhotoService } from './_services/photo.service';
          }
       })
    ],
+
+   //Services and Resolvers
    providers: [
       AuthService,
       ErrorInterceptorProvider,
@@ -87,6 +95,7 @@ import { PhotoService } from './_services/photo.service';
       MemberListResolver,
       MemberEditResolver,
       ListResolver,
+      MessagesResolver,
       PreventUnsavedChanges
    ],
    bootstrap: [
